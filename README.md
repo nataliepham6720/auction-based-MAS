@@ -112,12 +112,10 @@ Total distance: 5
 SSI improves total travel distance by $7 - 5 = 2$ units.
 
 ---
-For Sections **1–4**, execute:
+For Sections **1–4**, to reproduce all example traces, execute:
 ```bash
 python traces.py
 ```
-
-This reproduces all example traces.
 ---
 
 ### 5. Parallel Auction Performance over 100 Instances

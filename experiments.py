@@ -80,3 +80,12 @@ def print_report(stats):
 
     print("\nAverage improvement = (Parallel − SSI):")
     print(f"{improvement:.2f}")
+
+
+if __name__ == "__main__":
+    parallel_results, ssi_results, stats = (run_experiments(n_trials=100,
+                                                            n_robots=10,
+                                                            n_goals=20,
+                                                            grid_size=15,
+                                                            seed=42))
+    print_report(stats)

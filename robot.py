@@ -76,24 +76,3 @@ class Robot:
             f"cost={self.route_cost}"
             f")"
         )
-
-if __name__ == "__main__":
-
-    r = Robot(
-        robot_id=0,
-        start=(3,5)
-    )
-
-    print(r)
-
-    r.add_goal((8,9))
-    r.add_goal((1,2))
-
-    print(r.assigned_goals)
-
-    r.update_route(
-        [(8,9),(1,2)],
-        15
-    )
-
-    print(r)

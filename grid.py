@@ -65,15 +65,3 @@ def generate_auction_instance(
     goals = generate_goals(n_goals, grid_size)
 
     return robot_starts, goals
-
-
-if __name__ == "__main__":
-
-    robots, goals = generate_auction_instance(seed=42)
-
-    print("Robots:")
-    print(robots)
-    print("\nGoals:")
-    print(goals)
-
-    print("\nDistance example:", manhattan_distance(robots[0], goals[0]))

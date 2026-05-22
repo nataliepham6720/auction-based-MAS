@@ -1,5 +1,3 @@
-# routing.py
-
 import random
 from typing import List, Tuple, Dict, Optional
 from grid import manhattan_distance
@@ -87,142 +85,6 @@ def hill_climb_route(
         iteration += 1
     return current, current_cost, trace
 
-# Illustrate trace
-# def trace_hill_climb(start, goals):
-#     """
-#     Verbose hill climbing trace.
-#     Prints every neighbor considered.
-#     """
-#     current = random_route(goals)
-#     current_cost = route_cost(start,current)
-
-#     print("\n================================")
-#     print("HILL CLIMB TRACE")
-#     print("================================")
-
-#     print("\nStart position:")
-#     print(start)
-
-#     print("\nInitial route:")
-#     print(current)
-
-#     print(
-#         "Initial cost:",
-#         current_cost
-#     )
-
-
-#     iteration = 0
-
-
-#     while True:
-
-#         print(
-#             f"\n======= Iteration {iteration} ======="
-#         )
-
-#         best_route = current
-#         best_cost = current_cost
-
-#         improved = False
-
-
-#         ##################################################
-#         # Try every reversal
-#         ##################################################
-
-#         for i in range(len(current)):
-
-#             for j in range(i+1, len(current)):
-
-
-#                 candidate = reverse_subsequence(
-#                     current,
-#                     i,
-#                     j
-#                 )
-
-#                 candidate_cost = route_cost(
-#                     start,
-#                     candidate
-#                 )
-
-
-#                 print(
-#                     f"\nReverse [{i}:{j}]"
-#                 )
-
-#                 print(
-#                     "Candidate:",
-#                     candidate
-#                 )
-
-#                 print(
-#                     "Cost:",
-#                     candidate_cost
-#                 )
-
-
-#                 if candidate_cost < best_cost:
-
-#                     best_cost = candidate_cost
-#                     best_route = candidate
-
-#                     improved = True
-
-
-#         ##################################################
-
-#         if not improved:
-
-#             print(
-
-#                 "\nLOCAL MINIMUM REACHED"
-
-#             )
-
-#             break
-
-
-#         print(
-
-#             "\nSelected route:"
-#         )
-
-#         print(
-#             best_route
-#         )
-
-#         print(
-#             "Selected cost:",
-#             best_cost
-#         )
-
-
-#         current = best_route
-#         current_cost = best_cost
-
-#         iteration += 1
-
-
-#     print("\n================================")
-
-#     print(
-#         "FINAL ROUTE:"
-#     )
-
-#     print(
-#         current
-#     )
-
-#     print(
-#         "FINAL COST:",
-#         current_cost
-#     )
-
-#     print("================================")
-
-#     return current, current_cost
 
 # Use nearest neighbor to improve goal assignment
 def nearest_neighbor_route(start, goals):
@@ -237,95 +99,52 @@ def nearest_neighbor_route(start, goals):
         current = next_goal
     return route
 
-# nearest neighbor & 2-opt
-def nn_plus_2opt(start, goals):
+# nearest neighbor & reverse
+def nn_and_reverse(start, goals, save_trace=True):
     route = nearest_neighbor_route(start, goals)
+    best_cost = route_cost(start, route)
+    trace = []
+    if save_trace:
+        trace.append({
+            "iteration": 0,
+            "route": route.copy(),
+            "cost": best_cost,
+            "action": "Nearest Neighbor Initialization"
+        })
     improved = True
+    iteration = 1
 
     while improved:
         improved = False
-        best_cost = route_cost(start,route)
-
+        current_best_route = route
+        current_best_cost = best_cost
+        # Try all subsequence reversals 
         for i in range(len(route)):
-            for j in range(i+1,len(route)):
+            for j in range(i+1, len(route)):
                 candidate = reverse_subsequence(route,i,j)
                 candidate_cost = route_cost(start,candidate)
-                if candidate_cost < best_cost:
-                    route = candidate
-                    best_cost = candidate_cost
+                if candidate_cost < current_best_cost:
+                    current_best_route = candidate
+                    current_best_cost = candidate_cost
                     improved = True
 
-    return route, best_cost
+        if improved: # Update if improvement found
+            route = current_best_route
+            best_cost = current_best_cost
+            if save_trace:
+                trace.append({"iteration": iteration,
+                              "route": route.copy(),
+                              "cost": best_cost,
+                              "action": "reversal update"})
+            iteration += 1
+
+    return route, best_cost, trace
 
 
 # Trace printing 
 def print_trace(trace):
-    print("\nHILL CLIMB TRACE")
+    print("\nTRACE")
     for step in trace:
         print( f"Iter {step['iteration']} | "
                f"Cost {step['cost']} | "
                f"Route {step['route']}")
-
-
-if __name__ == "__main__":
-
-    start = (0,0)
-
-    goals = [
-
-        (8,2),
-        (1,5),
-        (4,4),
-        (7,9)
-
-    ]
-
-
-    print(
-        "\nInitial goals:"
-    )
-
-    print(goals)
-
-
-    route, cost, trace = hill_climb_route(
-
-        start,
-        goals,
-        save_trace=True
-
-    )
-
-
-    print(
-
-        "\nHill climb result:"
-    )
-
-    print(route)
-
-    print(
-        "Cost:",
-        cost
-    )
-
-
-    print_trace(trace)
-    # trace_hill_climb(
-    #     start,
-    #     goals
-    # )
-
-
-    print(
-
-        "\nNearest neighbor + 2-opt:"
-    )
-
-    route2, cost2 = nn_plus_2opt(
-        start,
-        goals
-    )
-
-    print(route2)
-    print(cost2)

@@ -1,6 +1,6 @@
 import random
 from robot import Robot
-from routing import hill_climb_route
+from routing import hill_climb_route, nn_and_reverse
 
 # Incremental bid
 def incremental_bid(robot, candidate_goal):
@@ -8,8 +8,10 @@ def incremental_bid(robot, candidate_goal):
     Compute: bid = cost(T + goal) - cost(T) where T = assigned goals
     """
     current_route, current_cost, _ = hill_climb_route(robot.start,robot.assigned_goals)
+    # current_route, current_cost, _ = nn_and_reverse(robot.start,robot.assigned_goals)
     new_goals = (robot.assigned_goals + [candidate_goal])
     new_route, new_cost, _ = hill_climb_route(robot.start,new_goals)
+    # new_route, new_cost, _ = nn_and_reverse(robot.start,new_goals)
     return (new_cost - current_cost)
 
 # Sequential Single Item Auction
@@ -67,130 +69,3 @@ def sequential_single_item_auction(robots,goals,verbose=False):
 
 def total_distance(robots):
     return sum(r.route_cost for r in robots)
-
-
-#############################################################
-# Example trace
-#############################################################
-
-if __name__ == "__main__":
-
-
-    #########################################################
-    # Example:
-    #
-    # 3 robots
-    # 3 goals
-    #
-    #########################################################
-
-    robots = [
-
-        Robot(
-            0,
-            (1,1)
-        ),
-
-        Robot(
-            1,
-            (8,8)
-        ),
-
-        Robot(
-            2,
-            (12,2)
-        )
-
-    ]
-
-
-    goals = [
-
-        (2,10),
-
-        (10,10),
-
-        (14,1)
-
-    ]
-
-
-    robots, trace = (
-
-        sequential_single_item_auction(
-
-            robots,
-
-            goals,
-
-            verbose=True
-
-        )
-
-    )
-
-
-    print(
-
-        "\n===================="
-    )
-
-    print(
-
-        "FINAL"
-    )
-
-
-    for r in robots:
-
-
-        print(
-
-            "\nRobot",
-
-            r.id
-
-        )
-
-
-        print(
-
-            "Goals:",
-
-            r.assigned_goals
-
-        )
-
-
-        print(
-
-            "Route:",
-
-            r.route
-
-        )
-
-
-        print(
-
-            "Cost:",
-
-            r.route_cost
-
-        )
-
-
-    print(
-
-        "\nTotal distance:"
-    )
-
-    print(
-
-        total_distance(
-
-            robots
-
-        )
-
-    )

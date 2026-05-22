@@ -1,7 +1,6 @@
 import random
 from robot import Robot
-from routing import (hill_climb_route,route_cost)
-
+from routing import (hill_climb_route, nn_and_reverse, route_cost)
 
 
 # Compute incremental bid
@@ -11,8 +10,10 @@ def incremental_bid(robot,candidate_goal):
     """
     current_goals = robot.assigned_goals.copy()
     current_route, current_cost, _ = hill_climb_route(robot.start, current_goals)
+    # current_route, current_cost, _ = nn_and_reverse(robot.start, current_goals)
     new_goals = current_goals + [candidate_goal]
     new_route, new_cost, _ = hill_climb_route(robot.start, new_goals)
+    # new_route, new_cost, _ = nn_and_reverse(robot.start, new_goals)
     return (new_cost - current_cost)
 
 

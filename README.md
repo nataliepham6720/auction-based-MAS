@@ -138,15 +138,7 @@ Statistics over the same 100 randomly generated auction instances (by fixed seed
 | Max | 58 |
 
 **Average Improvement** SSI reduces average total travel distance by
-$$\text{Improvement}
-=
-\text{Parallel}
--
-\text{SSI}
-=
-45.67 - 44.35
-=
-1.32$$
+$\text{Improvement}=\text{Parallel}-\text{SSI}=45.67 - 44.35=1.32$
 
 ---
 For Sections **5–6**, execute:
@@ -178,9 +170,7 @@ We compare Parallel Auction and Sequential Single-Item Auction (SSI) using ident
 
 
 **Average Improvement** SSI improves average travel distance by
-$$45.64 - 43.54
-=
-2.10$$
+$45.64 - 43.54=2.10$
 
 ### 8. Discussion: Why Proposed Algorithm Performs Better
 Our proposed algorithm achieves lower average travel distances because of two key ideas:

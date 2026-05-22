@@ -116,6 +116,7 @@ For Sections **1–4**, execute:
 ```bash
 python traces.py
 ```
+
 This reproduces all example traces.
 ---
 
@@ -192,6 +193,7 @@ The proposed SSI-based approach combined with greedy initialization:
 - Converges faster
 - Requires fewer iterations
 - Improves average travel distance across auction instances
+
 Experimental evaluation confirms that SSI outperforms the parallel auction baseline.
 
 
